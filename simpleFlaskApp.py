@@ -5,6 +5,11 @@ from getImageCoordinates import getCoordinates
 from encodeDecode import encrypt_message
 app = Flask(__name__)
 
+@app.route('/', methods=['GET'])
+def home():
+    return "Api...."
+
+
 @app.route('/post_json_data', methods=['POST'])
 def post_json_data():
     # Get the JSON data from the request
