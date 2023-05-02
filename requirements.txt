@@ -2,5 +2,5 @@
 #Requests==2.28.1
 #pycryptodome==3.17
 #numpy==1.23.5
-opencv-python==3.4.10.37
+opencv-python==4.5.1.48
 Flask==2.2.2
