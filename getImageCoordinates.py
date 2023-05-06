@@ -1,9 +1,7 @@
-import base64
-import json
 import tempfile
 import os
 import cv2
-import numpy as np
+
 
 def locateCenterOnImage(template_image_path, source_image_path):
     # Load the template and source images
