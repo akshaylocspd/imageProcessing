@@ -22,16 +22,22 @@ def getCoordinatesInDecodedFormate(data):
     response = {'message': msg}
     return jsonify(response)
 
-@app.route('/uploadFile', methods = ['POST'])  #
+@app.route('/uploadfile', methods = ['POST'])  #
 def upload():  
     if request.method == 'POST':  
         responce={}
         tokenId =request.headers.get('Tokenid')
+        print(request.headers)
         if countMatches('63e12748f9ad14b21cd15e7f',tokenId) == 1:
             file = request.files['file']
             data=json.load(file)
+            # print(data)
             responce= getCoordinatesInDecodedFormate(data)
         return responce
-        
+
+@app.route('/', methods = ['GET'])  #
+def home():  
+    return "Api"
+
 if __name__=='__main__':
     app.run(host="0.0.0.0")
