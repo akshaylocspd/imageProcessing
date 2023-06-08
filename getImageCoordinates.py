@@ -29,6 +29,31 @@ def getCoordinates(img_data_a,img_data_b):
         with open(os.path.join(temp_dir, 'B.png'), 'wb') as f:
             f.write(img_data_b)
 
+            aFilePath=os.path.join(temp_dir, 'A.png')
+            bFilePath=os.path.join(temp_dir, 'B.png')
         # Call the locateCenterOnImage function with the file paths in the temporary directory
-        return locateCenterOnImage(os.path.join(temp_dir, 'A.png'), os.path.join(temp_dir, 'B.png'))
+        return locateCenterOnImage(aFilePath, bFilePath),is_A_is_SubsetOf_B(aFilePath,bFilePath)
 
+
+def is_A_is_SubsetOf_B(aFilePath,bFilePath):
+    # Load images
+    img_a = cv2.imread(aFilePath, 0)
+    img_b = cv2.imread(bFilePath, 0)
+    # Perform template matching
+    result = cv2.matchTemplate(img_b, img_a, cv2.TM_CCOEFF_NORMED)
+
+    # Define a threshold for similarity
+    threshold = 0.8
+
+    # Get the location of the matched area
+    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
+    if max_val >= threshold:
+        print("A.png is found within B.png")
+        # You can access the top-left and bottom-right coordinates of the matched area using max_loc
+        top_left = max_loc
+        bottom_right = (top_left[0] + img_a.shape[1], top_left[1] + img_a.shape[0])
+        print("Matched Area Coordinates: Top Left:", top_left, "Bottom Right:", bottom_right)
+        return True
+    else:
+        print("A.png is not found within B.png")
+        return False

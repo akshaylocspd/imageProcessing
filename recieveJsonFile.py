@@ -14,12 +14,14 @@ def getCoordinatesInDecodedFormate(data):
     # Decode base64 strings to bytes
     img_data_a = base64.b64decode(base64_string_a)
     img_data_b = base64.b64decode(base64_string_b)
-    center=getCoordinates(img_data_a,img_data_b)
+    result=getCoordinates(img_data_a,img_data_b)
+    center = result[0]
+    a_Is_SubsetOf_B = result[1]
     print(center)
     msg="x="+str(center[0])+" y="+str(center[1])
     msg=encrypt_message(message=msg)
     # Return a JSON response
-    response = {'message': msg}
+    response = {'message': msg,'isTargetExist':a_Is_SubsetOf_B}
     return jsonify(response)
 
 @app.route('/uploadfile', methods = ['POST'])  #
@@ -27,7 +29,6 @@ def upload():
     if request.method == 'POST':  
         responce={}
         tokenId =request.headers.get('Tokenid')
-        print(request.headers)
         if countMatches('63e12748f9ad14b21cd15e7f',tokenId) == 1:
             file = request.files['file']
             data=json.load(file)
